@@ -24,7 +24,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 	
 );
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 
 =head1 NAME
@@ -153,7 +153,7 @@ sub service
 
     if($ENV{MOD_PERL})
     {
-        use mod_perl;
+        require mod_perl;
         use constant MP2 => ($mod_perl::VERSION >= 1.99);
         if (MP2)
         {
