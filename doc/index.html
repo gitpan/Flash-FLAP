@@ -106,45 +106,23 @@ h4 {
 <body
  style="background-image: url(orn5.gif);">
 <div style="position: absolute; left: 20px;">
-<h1>FLAP - Flash Remoting in Perl<br>
-</h1>
-<table cellpadding="2" cellspacing="2" border="0"
- style="text-align: left; width: 600px;">
+<center><h1>FLAP - Flash Remoting in Perl<br>
+</h1></center>
+<table cellpadding="7" cellspacing="7" border="0"
+ style="text-align: left">
   <tbody>
     <tr>
-      <td style="vertical-align: top;"><br>
+      <td style="vertical-align: top;width: 400px"><br>
       <h2> Open source implementation of Macromedia's AMF protocol </h2>
-      <br>
-      <a href="Flash-FLAP-0.07.tar.gz">Download it! Current version is
-Flash-FLAP-0.07.tar.gz.</a><br>
+			</td></tr>
+    <tr>
+      <td style="vertical-align: top;width: 400px"><br>
+
+      <a href="Flash-FLAP-0.08.tar.gz">Download it! Current version is
+Flash-FLAP-0.08.tar.gz.</a><br>
       <br>
       <a href="code.html">Usage instructions and code samples.</a><br>
       <br>
-<a href="examples/cpu/cpu.html">A live demo application is here</a>! It is also included into the download in the source and compiled form.<br>
-	<br>
-<a href=examples/dataGrid/dataGrid.html>Here is another demo</a> that shows a grid component in Flash that gets its data from the server as an array of objects.
-	<br><br>
-<a href=examples/basic/basic.html>A basic example</a> of using service discovery. It sends data from client to server and back.
-	<br><br>
-<a href=examples/sql/park.html>A more complex example</a> that involves accessing a Mysql database.
-<h2>Applications</h2>
-FLAP is used for <a href=http://www.dnai.org/geneboy/>Geneboy</a>, a genetics educational tool written in Flash.
-      <br>
-      <h2>Updates</h2>
-		Jul 26, 2003. Version 0.07 uploaded. Fixed a bug that would wrongly detect end-of-file in the input data on Windows and replaced the "our" keyword that is not backwards-compatible. Created pseudo_query() in Util::Object that encapsulates the recordset format.<br><br>
-
-		Jun 22, 2003. Version 0.06 uploaded. Added an example that talks to a database on the server side. This is implemented via Flash::FLAP::Sql::MysqlRecordSet.pm. Got rid of a couple of "uninitialized" warnings.<br><br>
-
-		Apr 29, 2003. Version 0.05 uploaded. It supports Windows and mod_perl 1.<br><br>
-
-        Apr 14, 2003 - FLAP renamed to Flash::FLAP. Version 0.03 uploaded. Added ser
-vice discovery - now you can register a directory and put Perl packages in it. Every
- package will be considered a service. Macromedia Service Browser support added.
-
-<br>
-<br>
-	Mar 11, 2003 - FLAP-0.02 uploaded. Verified trasfer of basic data types from Flash to Perl. Parameters are now sent to Perl functions as an array, not an array ref.
-<p>	Mailing list on SourceForge is set up. Please <a href=http://lists.sourceforge.net/lists/listinfo/flaph-general>go here to subscribe</a>.
       <h2>What is this?</h2>
       <h3> Short version<br>
       </h3>
@@ -156,19 +134,19 @@ objects, recordsets. Flash clients talk with the server using the AMF
 protocol, which is proprietary to Macromedia. However, it's not that
 hard to decode. <br>
       <br>
-Using even the first version of FLAP, it is possible to send arbitrary
+Using FLAP, it is possible to send arbitrary
 data between client and server using very few lines of code. There is no
 need to pack complicated data structures into CGI form parameteres or
 XML strings. The coding time can be spent on better things - data
 preparation and graphical presentation, not data delivery.<br>
       <br>
       <h3>Long version</h3>
-HTML forms are ugly. HTML itself is not well suited for presenting
+<p>HTML forms are ugly. HTML itself is not well suited for presenting
 data. Everybody knows that but still uses them. However, the Rich
 Internet Client is back and it gets adopted more and         more. In
 part this has to do with Macromedia's eforts. <br>
       <br>
-Macromedia Flash has matured enough to <br>
+<p>Macromedia Flash has matured enough to <br>
 a) allow developers to build rich, visually attractive user interfaces
 and <br>
 b) receive data from the server in a convenient way.<br>
@@ -205,13 +183,32 @@ community to make this technology available in Perl and (why not?) in
 Python as well. We set out to decode the protocol, but soon discovered
 that <a href="http://amfphp.sourceforge.net/">PHP folks</a> beat us by a
 month, so we simply rewrote their code in Perl.</p>
-We would like to hear the community feedback - the amount of time we
+<p>We would like to hear the community feedback - the amount of time we
 will put into this project will be proportional to the need for it.<br>
       <br>
-Please respond if you are interested either in using FLAP or in
+<p>Please respond if you are interested either in using FLAP or in
 contributing to it.<br>
       <br>
-Authors:<br>
+      <br>
+      </td>
+			<td style="vertical-align: top;width: 400px">
+<h2>Examples</h2>
+<ul>
+<li><a href="examples/cpu/cpu.html">CPU Usage</a>
+	<br><br>
+<li><a href=examples/dataGrid/dataGrid.html>Data grid</a> that gets its data from the server as an array of objects.
+	<br><br>
+<li><a href=examples/basic/basic.html>Service discovery example</a>. It sends data from client to server and back.
+	<br><br>
+<li><a href=examples/sql/park.html>Accessing a Mysql database</a> 
+	<br><br>
+<li><a href=examples/petmarket/index.html><font color=red>PETMARKET!!!</font></a> 
+</ul>
+<h2>Applications</h2>
+FLAP is used for <a href=http://www.dnai.org/geneboy/>Geneboy</a>, a genetics educational tool written in Flash.
+      <br>
+<h2>Administrivia</h2>
+<p>Authors:<br>
       <br>
       <a href="mailto:simonf@simonf.com"><span
  style="font-style: italic;">Simon Ilyushchenko</span></a><br
@@ -219,12 +216,13 @@ Authors:<br>
       <a href="mailto:arva@cshl.edu"><span style="font-style: italic;">Adrian
 Arva</span></a><br style="font-style: italic;">
       <br>
-The initial code is based on the <a
+<p>The initial code is based on the <a
  href="http://amfphp.sourceforge.net/">AMF-PHP project.</a><br>
       <br>
-Created on Feb 24, 2003.<br>
-      <br>
-      </td>
+<p>Created on Feb 24, 2003.<br>
+      <p><a href="updates.html">Update history</a> (last updated August 3, 2003)
+<p>	Mailing list on SourceForge is set up. Please <a href=http://lists.sourceforge.net/lists/listinfo/flaph-general>go here to subscribe</a>.
+</td>
     </tr>
     <tr>
       <td style="vertical-align: top;"><br>

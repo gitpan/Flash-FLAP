@@ -24,7 +24,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 	
 );
 
-$VERSION = '0.07';
+$VERSION = '0.08';
 
 
 =head1 NAME
@@ -104,6 +104,8 @@ ORIGINAL PHP Remoting CONTRIBUTORS
     Klaasjan Tukker - modifications, check routines, and register-framework
 
 ==head1 CHANGES
+Sat Aug  2 14:01:15 EDT 2003
+Changed new() to be invokable on objects, not just strings.
 
 Sun Jul 20 19:27:44 EDT 2003
 Added "binmode STDIN" before reading input to prevent treating 0x1a as EOF on Windows.
@@ -133,8 +135,9 @@ my $exec;
 sub new
 {
     my ($proto) = @_;
+	my $class = ref($proto) || $proto;
     my $self = {};
-    bless $self, $proto;
+    bless $self, $class;
     $self->{exec} = new Flash::FLAP::App::Executive();
     $self->{debug}=0;
     return $self;

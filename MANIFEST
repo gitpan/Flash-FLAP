@@ -38,3 +38,13 @@ doc/examples/sql/park.swf
 doc/examples/sql/park.sql
 doc/examples/sql/park.pl
 doc/examples/sql/parkservices/ParkService.pm
+doc/examples/petmarket/README.txt
+doc/examples/petmarket/petmarket.pl
+doc/examples/petmarket/petmarket.sql
+doc/examples/petmarket/petmarket/api/cartservice.pm
+doc/examples/petmarket/petmarket/api/catalogservice.pm
+doc/examples/petmarket/petmarket/api/dbConn.pm
+doc/examples/petmarket/petmarket/api/orderservice.pm
+doc/examples/petmarket/petmarket/api/stringresourcesservice.pm
+doc/examples/petmarket/petmarket/api/userservice.pm
+doc/updates.html
