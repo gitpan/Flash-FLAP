@@ -1,10 +1,10 @@
 FLAP: Flash Remoting in Perl. 
 See http://www.simonf.com/flap for more information
 
-Version: 0.06
-Date: June 22, 2003.
+Version: 0.07
+Date: July 27, 2003.
 
-This is the code and an example that show the possibility of using Perl to talk to a Macromedia Flash client using AMF (Action Message Format).
+This is the code and several examples that show the possibility of using Perl to talk to a Macromedia Flash client using AMF (Action Message Format).
 
 To install:
 
@@ -14,6 +14,6 @@ To install:
 docs/examples/cpu/CpuExample.swf movie into a web page. 
 Use docs/examples/cpu/cpu.html as a template. When the movie starts, enter the URL of your script into the text field.
 
-4. Observe the load of your server when you click Refresh!
+2. Observe the load of your server when you click Refresh!
 
 Simon Ilyushchenko

@@ -11,6 +11,10 @@ package Flash::FLAP::Util::Object;
 ==head1 DESCRIPTION    
 
     Package used for building and retreiving  header and body information
+
+==head1 CHANGES
+Sun Jul 27 16:52:12 EDT 2003
+Added the pseudo_query() method to create a recordset object wanted by Flash.
     
 =cut
 
@@ -79,6 +83,32 @@ sub getBodyAt
     my ($self, $id)=@_;
     $id=0 unless $id;
     return $self->{_bodies}->[$id];
+}
+
+sub pseudo_query
+{
+    my ($self, $columnNames, $data) = @_;
+
+    my $result = new Flash::FLAP::Util::Object;
+    # create the serverInfo array
+    $result->{"serverInfo"} = {};
+
+# create an initialData array
+    my (@initialData, @columnNames);
+    $result->{serverInfo}->{initialData} = $data;
+    $result->{serverInfo}->{columnNames} = $columnNames;
+    $result->{serverInfo}->{totalCount}= scalar @$data;
+
+    # create the id field --> i think this is used for pageable recordsets
+    $result->{"serverInfo"}->{"id"} = "FLAP";
+    $result->{"serverInfo"}->{"cursor"} = 1; # maybe the current record ????
+    $result->{"serverInfo"}->{"serviceName"} = "doStuff"; # in CF this is PageAbleResult not here
+    # versioning
+    $result->{"serverInfo"}->{"version"} = 1;
+
+    $result->{_explicitType}='RecordSet';
+
+    return $result;
 }
 
 1;

@@ -13,6 +13,9 @@ package Flash::FLAP::Sql::MysqlRecordSet;
     Encode the information returned by a Mysql query into the AMF RecordSet format.
     
 ==head1 CHANGES
+Sun Jul 27 16:50:28 EDT 2003
+Moved the formation of the query object into Util::Object->pseudo_query().
+
 Sun May 11 18:22:33 EDT 2003
 Since Serializer now supports generic AMFObjects, made sure we conform.
 We need to have the _explicitType attribute...
@@ -45,20 +48,12 @@ sub query
 {
     my ($self, $queryText) = @_;
 
-    my $result = new Flash::FLAP::Util::Object;
-    # create the serverInfo array
-    $result->{"serverInfo"} = {};
-
 	my $sth = $self->dbh->prepare($queryText);
     $sth->execute();
 
-# create an initialData array
-    my (@initialData, @columnNames);
-    $result->{serverInfo}->{initialData} = \@initialData;
-    $result->{serverInfo}->{columnNames} = \@columnNames;
-    $result->{serverInfo}->{totalCount}=$sth->rows();
+    my @initialData;
 
-	push @columnNames, @{$sth->{NAME}};
+	my @columnNames = @{$sth->{NAME}};
 
     # grab all of the rows
 	# There is a reason arrayref is not used - if it is, 
@@ -69,16 +64,7 @@ sub query
         push @initialData, \@array;
     }	
 
-    # create the id field --> i think this is used for pageable recordsets
-    $result->{"serverInfo"}->{"id"} = "FLAP"; 
-    $result->{"serverInfo"}->{"cursor"} = 1; # maybe the current record ????
-    $result->{"serverInfo"}->{"serviceName"} = "doStuff"; # in CF this is PageAbleResult not here   
-    # versioning
-    $result->{"serverInfo"}->{"version"} = 1;
-
-    $result->{_explicitType}='RecordSet';
-
-    return $result;
+    return Flash::FLAP::Util::Object->pseudo_query(\@columnNames, \@initialData);
 }
 
 1;

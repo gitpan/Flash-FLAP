@@ -24,7 +24,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 	
 );
 
-$VERSION = '0.06';
+$VERSION = '0.07';
 
 
 =head1 NAME
@@ -105,6 +105,9 @@ ORIGINAL PHP Remoting CONTRIBUTORS
 
 ==head1 CHANGES
 
+Sun Jul 20 19:27:44 EDT 2003
+Added "binmode STDIN" before reading input to prevent treating 0x1a as EOF on Windows.
+
 Wed Apr 23 19:22:56 EDT 2003
 Added "binmode STDOUT" before printing headers to prevent conversion of 0a to 0d0a on Windows.
 Added modperl 1 support and (so far commented out) hypothetical modperl 2 support.
@@ -150,6 +153,9 @@ sub service
 
     my $inputStream;
     my $content = "";
+	
+	#Otherwise Apache on Windows treats 0x1a as EOF.
+	binmode STDIN;
 
     if($ENV{MOD_PERL})
     {

@@ -11,6 +11,9 @@ package Flash::FLAP::Util::RemotingService;
     
 ==head1 CHANGES
 
+Sun Jul 20 19:35:40 EDT 2003
+Substituted "use vars qw($AUTOLOAD)" for "our $AUTOLOAD" to be backwards-compatible to Perl < 5.6
+
 Sun Apr  6 14:24:00 2003
 Created after AMF-PHP, though their dynamic inheritance is changed to wrapping.
 	
@@ -55,10 +58,12 @@ sub methodTable
 	return $methodTable;
 }
 
+use vars qw($AUTOLOAD);
+
 sub AUTOLOAD
 {
     my ($self, @args) = @_;
-    our $AUTOLOAD;
+    #our $AUTOLOAD;
     
     #Strip the class path and only leave the method name;
     my @path = split /:/, $AUTOLOAD;
