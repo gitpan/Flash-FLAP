@@ -4,18 +4,21 @@ package Flash::FLAP::Util::Object;
 # under the same terms as Perl itself.
 # The code is based on the -PHP project (http://amfphp.sourceforge.net/)
 
-=head1 NAME
+=head1 NAME 
+
     Flash::FLAP::Object
     Translated from PHP Remoting v. 0.5b from the -PHP project.        
-        
-==head1 DESCRIPTION    
+
+=head1 DESCRIPTION    
 
     Package used for building and retreiving  header and body information
 
-==head1 CHANGES
+=head1 CHANGES
+
 Sun Jul 27 16:52:12 EDT 2003
-Added the pseudo_query() method to create a recordset object wanted by Flash.
-    
+
+=item Added the pseudo_query() method to create a recordset object wanted by Flash.
+
 =cut
 
 use strict;

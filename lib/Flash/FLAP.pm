@@ -24,7 +24,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 	
 );
 
-$VERSION = '0.08';
+$VERSION = '0.09';
 
 
 =head1 NAME
@@ -104,6 +104,11 @@ ORIGINAL PHP Remoting CONTRIBUTORS
     Klaasjan Tukker - modifications, check routines, and register-framework
 
 ==head1 CHANGES
+
+=head2 Sat Mar 13 16:25:00 EST 2004
+
+=item Patch from Kostas Chatzikokolakis handling encoding.
+
 Sat Aug  2 14:01:15 EDT 2003
 Changed new() to be invokable on objects, not just strings.
 
@@ -212,7 +217,7 @@ sub fromFile
     my $inputStream = new Flash::FLAP::IO::InputStream($content);
     
     # build the deserializer and pass it a reference to the inputstream
-    my $deserializer = new Flash::FLAP::IO::Deserializer($inputStream);
+    my $deserializer = new Flash::FLAP::IO::Deserializer($inputStream, $self->{encoding});
     
     # get the returned Object
     my $amfin = $deserializer->getObject();
@@ -238,7 +243,7 @@ sub _service
     my $inputStream = new Flash::FLAP::IO::InputStream($content);
     
     # build the deserializer and pass it a reference to the inputstream
-    my $deserializer = new Flash::FLAP::IO::Deserializer($inputStream);
+    my $deserializer = new Flash::FLAP::IO::Deserializer($inputStream, $self->{encoding});
     
     # get the returned Object
     my $amfin = $deserializer->getObject();
@@ -284,7 +289,7 @@ sub _service
     my $outstream = new Flash::FLAP::IO::OutputStream ();
 
     # create a new serializer
-    my $serializer = new Flash::FLAP::IO::Serializer ($outstream);
+    my $serializer = new Flash::FLAP::IO::Serializer ($outstream, $self->{encoding});
     
     # serialize the data
     $serializer->serialize($amfout);
@@ -346,6 +351,13 @@ sub setSafeExecution
 {
     my ($self, $safe) = @_;
     print STDERR "There is no need to call setSafeExecution anymore!\n";
+}
+
+sub encoding
+{
+	my $self = shift;
+	$self->{encoding} = shift if @_;
+	return $self->{encoding};
 }
 
 #    usefulldebugging method 

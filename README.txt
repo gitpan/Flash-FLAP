@@ -1,8 +1,8 @@
 FLAP: Flash Remoting in Perl. 
 See http://www.simonf.com/flap for more information
 
-Version: 0.08
-Date: August 1, 2003.
+Version: 0.09
+Date: March 13, 2003.
 
 This is the code and several examples that show the possibility of using Perl to talk to a Macromedia Flash client using AMF (Action Message Format).
 

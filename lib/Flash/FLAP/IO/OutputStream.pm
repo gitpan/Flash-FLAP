@@ -5,12 +5,13 @@ package Flash::FLAP::IO::OutputStream;
 # The code is based on the -PHP project (http://amfphp.sourceforge.net/)
 
 =head1 NAME
+
     Flash::FLAP::IO::OutputStream
-        
-==head1 DESCRIPTION    
+
+=head1 DESCRIPTION    
 
     Class used to convert the perl stuff into binary    
-    
+
 =cut
 
 use strict;

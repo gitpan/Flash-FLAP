@@ -5,39 +5,52 @@ package Flash::FLAP::IO::Serializer;
 # The code is based on the -PHP project (http://amfphp.sourceforge.net/)
 
 =head1 NAME
-    Flash::FLAP::IO::Deserializer
-        
-==head1 DESCRIPTION    
+
+    Flash::FLAP::IO::Serializer
+
+=head1 DESCRIPTION    
 
     Class used to convert physical perl objects into binary data.
 
-==head1 CHANGES
-Sun May 11 16:43:05 EDT 2003
-Changed writeData to set type to "NULL" when the incoming data is undef. Previously
+=head1 CHANGES
+
+=head2 Sat Mar 13 16:25:00 EST 2004
+
+=item Patch from Tilghman Lesher that detects numbers and dates in strings
+and sets return type accordingly.
+
+=item Patch from Kostas Chatzikokolakis handling encoding and sending null value.
+
+=head2 Sun May 11 16:43:05 EDT 2003
+
+=item Changed writeData to set type to "NULL" when the incoming data is undef. Previously
 it became a String, just like other scalars.
 
-Changed PHP's writeRecordset to a generic writeAMFObject. Verified Recordset support.
+=item Changed PHP's writeRecordset to a generic writeAMFObject. Verified Recordset support.
 
+=head2 Sun Mar  9 18:20:16 EST 2003
 
-Sun Mar  9 18:20:16 EST 2003
-Function writeObject should return the same as writeHash. This assumes that all meaningful data
+=item Function writeObject should return the same as writeHash. This assumes that all meaningful data
 are stored as hash keys.
-    
+
 =cut
 
 
 use strict;
+
+use Encode qw/from_to/;
 
 # holder for the data
 my $data;
 
 sub new
 {	
-    my ($proto, $stream) = @_;
+    my ($proto, $stream, $encoding) = @_;
     # save
     my $self={};
     bless $self, $proto;
     $self->{out} = $stream;
+	$self->{encoding} = $encoding;
     return $self;
 }
 
@@ -111,6 +124,7 @@ sub writeString
     $self->{out}->writeByte(2);
     # write the string value
     #$self->{out}->writeUTF(utf8_encode($d));
+	from_to($d, $self->{encoding}, "utf8") if $self->{encoding};
     $self->{out}->writeUTF($d);
 }
 
@@ -119,6 +133,7 @@ sub writeXML
     my ($self, $d)=@_;
     $self->{out}->writeByte(15);
     #$self->{out}->writeLongUTF(utf8_encode($d));
+	from_to($d, $self->{encoding}, "utf8") if $self->{encoding};
     $self->{out}->writeLongUTF($d);
 }
 
@@ -243,7 +258,7 @@ sub writeData
     #if it was not explicitly passed
     if ($type eq "unknown")
     {
-		if (!$d)
+		if (!defined $d)		# convert undef to null, but not "" or 0
 		{
 			$type = "NULL";
 		}
@@ -252,7 +267,33 @@ sub writeData
         my $myRef = ref $d;
         if (!$myRef || $myRef =~ "SCALAR")
         {
-            $type = "string";
+			if ($myRef) {
+				study $$myRef;
+				if ($$myRef =~ m/^(\d{4})\-(\d{2})\-(\d{2})( (\d{2}):(\d{2}):(\d{2}))?$/) {
+					# Handle "YYYY-MM-DD" and "YYYY-MM-DD HH:MM:SS"
+					require POSIX;
+					if ($4) {
+						$$myRef = POSIX::mktime($7,$6,$5,$3,$2 - 1,$1 - 1900) * 1000;
+					} else {
+						$$myRef = POSIX::mktime(0,0,0,$3,$2 - 1,$1 - 1900) * 1000;
+					}
+					$type = "date";
+				} elsif ($$myRef =~ m/[^0-9\.\-]/) {
+					$type = "string";
+				} elsif ($$myRef =~ m/\..*\./) {
+					# More than 1 period (e.g. IP address)
+					$type = "string";
+				} elsif (($$myRef =~ m/.\-/) or ($$myRef eq '-')) {
+					# negative anywhere but at the beginning
+					$type = "string";
+				} elsif ($$myRef =~ m/\./) {
+					$type = "double";
+				} else {
+					$type = "integer";
+				}
+			} else {
+				$type = "string";
+			}
         }
         elsif ($myRef =~ "ARRAY")
         {

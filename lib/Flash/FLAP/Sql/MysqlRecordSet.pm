@@ -5,24 +5,30 @@ package Flash::FLAP::Sql::MysqlRecordSet;
 # The code is based on the AMF-PHP project (http://amfphp.sourceforge.net/)
 
 =head1 NAME
-    Flash::FLAP::Sql;:MysqlRecordSet
-    Translated from PHP Remoting v. 0.5b from the -PHP project.        
-        
-==head1 DESCRIPTION    
+
+    Flash::FLAP::Sql::MysqlRecordSet
+
+    Translated from PHP Remoting v. 0.5b from the -PHP project.
+
+=head1 DESCRIPTION
 
     Encode the information returned by a Mysql query into the AMF RecordSet format.
-    
-==head1 CHANGES
-Sun Jul 27 16:50:28 EDT 2003
-Moved the formation of the query object into Util::Object->pseudo_query().
 
-Sun May 11 18:22:33 EDT 2003
-Since Serializer now supports generic AMFObjects, made sure we conform.
+=head1 CHANGES
+
+=head2 Sun Jul 27 16:50:28 EDT 2003
+
+=item Moved the formation of the query object into Util::Object->pseudo_query().
+
+=head2 Sun May 11 18:22:33 EDT 2003
+
+=item Since Serializer now supports generic AMFObjects, made sure we conform.
 We need to have the _explicitType attribute...
 
-Sun Apr  6 14:24:00 2003
-Created after AMF-PHP, but something is not working yet...
-	
+=head2 Sun Apr  6 14:24:00 2003
+
+=item Created after AMF-PHP, but something is not working yet...
+
 =cut
 
 use strict;

@@ -4,26 +4,41 @@ package Flash::FLAP::App::Executive;
 # under the same terms as Perl itself.
 # The code is based on the -PHP project (http:#amfphp.sourceforge.net/)
 
-=head1 NAME
-    Flash::FLAP::App::Executive
-        
-==head1 DESCRIPTION    
+=head1 NAME 
 
-    Executive package figures out whether to call an explicitly registered package or to look one up in a registered directory. Then it executes the desired method in the package
-    
-==head1 CHANGES
+Flash::FLAP::App::Executive
 
-Sun Mar  23 13:27:00 EST 2003
-Synching with AMF-PHP:
-Replaced packagepath, packagename, packageConstruct with classpath, classname, classConstruct.
-Added _instanceName, _origClassPath and _headerFilter.
-Added subs setHeaderFilter(), setInstanceName()
-Renamed setClassPath to setTarget and removed extra junk from that function.
-Eliminated _getPackage() and _getMethod().
-Removed safeExecution().
-	
-Tue Mar 11 21:59:27 EST 2003
-Passing @$a instead of $a to user functions. $a always is an array.
+=head1 DESCRIPTION    
+
+Executive package figures out whether to call an explicitly
+registered package or to look one up in a registered directory.
+Then it executes the desired method in the package.
+
+=head1 CHANGES
+
+=head2 Sun Mar 23 13:27:00 EST 2003
+
+=over 4
+
+=item Synching with AMF-PHP:
+
+=item Replaced packagepath, packagename, packageConstruct with classpath, classname, classConstruct.
+
+=item Added _instanceName, _origClassPath and _headerFilter.
+
+=item Added subs setHeaderFilter(), setInstanceName()
+
+=item Renamed setClassPath to setTarget and removed extra junk from that function.
+
+=item Eliminated _getPackage() and _getMethod().
+
+=item Removed safeExecution().
+
+=back
+
+=head2 Tue Mar 11 21:59:27 EST 2003
+
+=item Passing @$a instead of $a to user functions. $a always is an array.
 
 =cut
 

@@ -13,6 +13,7 @@ MANIFEST
 README.txt
 t/1.t
 doc/code.html
+doc/encoding.html
 doc/cpu.pl
 doc/index.html
 doc/orn5.gif
@@ -48,3 +49,4 @@ doc/examples/petmarket/petmarket/api/orderservice.pm
 doc/examples/petmarket/petmarket/api/stringresourcesservice.pm
 doc/examples/petmarket/petmarket/api/userservice.pm
 doc/updates.html
+META.yml                                 Module meta-data (added by MakeMaker)

@@ -5,26 +5,38 @@ package Flash::FLAP::IO::Deserializer;
 # The code is based on the -PHP project (http://amfphp.sourceforge.net/)
 
 =head1 NAME
-    Flash::FLAP::IO::Deserializer
-        
-==head1 DESCRIPTION    
+
+Flash::FLAP::IO::Deserializer
+
+=head1 DESCRIPTION    
 
     Package used to turn the binary data into physical perl objects.
 
 =head1 CHANGES
-Sun Mar  9 18:17:31 EST 2003
-The return value of readArray should be \@ret, not @ret.
 
-Tue Mar 11 21:55:41 EST 2003
-Fixed reading keys of objects.
-Added floor(), as Perl lacks it.
+=head2 Sat Mar 13 16:31:31 EST 2004
 
-Sun Apr  6 14:24:00 2003
-Added code to read objects of type 8. Useful for decoding real AMF server packages, but hardly anywhere else.
-    
+=item Patch from Kostas Chatzikokolakis handling encoding.
+
+=head2 Sun Mar  9 18:17:31 EST 2003
+
+=item The return value of readArray should be \@ret, not @ret.
+
+=head2 Tue Mar 11 21:55:41 EST 2003
+
+=item Fixed reading keys of objects.
+
+=item Added floor(), as Perl lacks it.
+
+=head2 Sun Apr  6 14:24:00 2003
+
+=item Added code to read objects of type 8. Useful for decoding real AMF server packages, but hardly anywhere else.
+
 =cut
 
 use strict;
+
+use Encode qw/from_to/;
 
 # the number of headers in the packet
 my $header_count;
@@ -48,13 +60,15 @@ sub floor
 # constructor that also dserializes the raw data
 sub new
 {
-    my ($proto, $is)=@_;
+    my ($proto, $is, $encoding)=@_;
     my $self = {};
     bless $self, $proto;
     # the object to store the deserialized data
     $self->{amfdata} = new Flash::FLAP::Util::Object();
     # save the input stream in this object
     $self->{inputStream} = $is;
+	# save the encoding in this object
+	$self->{encoding} = $encoding;
     # read the binary header
     $self->readHeader();
     # read the binary body
@@ -196,7 +210,9 @@ sub readBoolean
 sub readString
 {
     my ($self)=@_;
-    return $self->{inputStream}->readUTF();
+    my $s = $self->{inputStream}->readUTF();
+	from_to($s, "utf8", $self->{encoding}) if $self->{encoding};
+	return $s;
 }
 
 sub readDate
@@ -225,6 +241,7 @@ sub readXML
     my ($self)=@_;
         # reads XML
     my $rawXML = $self->{inputStream}->readLongUTF();
+	from_to($rawXML, "utf8", $self->{encoding}) if $self->{encoding};
     
     # maybe parse the XML into a PHP XML structure??? or leave it to the developer
     

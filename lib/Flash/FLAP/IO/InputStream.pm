@@ -6,16 +6,24 @@ package Flash::FLAP::IO::InputStream;
 
 
 =head1 NAME
+
     Flash::FLAP::IO::InputStream
-        
-==head1 DESCRIPTION    
+
+=head1 DESCRIPTION    
 
     InputStream package built to handle getting the binary data from the raw input stream.
-    
-==head1 CHANGES    
-Sun May 11 16:41:52 EDT 2003
-Rewrote readInt to get rid of the "uninitialized" warning when reading bytes of value 0.
-    
+
+=head1 CHANGES    
+
+=head2 Sat Mar 13 16:39:29 EST 2004
+
+=item Changed calls to ord() in readByte() and concatenation readDouble() 
+to prevent the appearance of the "uninitialized" warning.
+
+=head2 Sun May 11 16:41:52 EDT 2003
+
+=item Rewrote readInt to get rid of the "uninitialized" warning when reading bytes of value 0.
+
 =cut
 
 use strict;
@@ -42,7 +50,9 @@ sub readByte
 {
     my ($self)=@_;
     # return the next byte
-    my $result = ord($self->{raw_data}->[$self->{current_byte}]);
+	my $nextByte = $self->{raw_data}->[$self->{current_byte}];
+	my $result;
+	$result = ord($nextByte) if $nextByte;
     $self->{current_byte} += 1;
     return $result;
 }
@@ -92,7 +102,8 @@ sub readDouble
     for(my $i = 7 ; $i >= 0 ; $i--)
     {
             # grab the bytes in reverse order from the backwards index
-            $invertedBytes .= $self->{raw_data}->[$self->{current_byte}+$i];
+			my $nextByte = $self->{raw_data}->[$self->{current_byte}+$i];
+			$invertedBytes .= $nextByte if $nextByte;
     }
     # move the seek head forward 8 bytes
     $self->{current_byte} += 8;

@@ -2,21 +2,25 @@ package Flash::FLAP::Util::RemotingService;
 
 
 =head1 NAME
+
     Flash::FLAP::Util::RemotingService
-        
-==head1 DESCRIPTION    
 
-    Wrapper for user-registered classes. This wrapper can respond to the DecribeService service calls,
-    going through the user class and collecting its method descriptions.
-    
-==head1 CHANGES
+=head1 DESCRIPTION    
 
-Sun Jul 20 19:35:40 EDT 2003
-Substituted "use vars qw($AUTOLOAD)" for "our $AUTOLOAD" to be backwards-compatible to Perl < 5.6
+Wrapper for user-registered classes. This wrapper can respond
+to the DecribeService service calls, going through the user
+class and collecting its method descriptions.
 
-Sun Apr  6 14:24:00 2003
-Created after AMF-PHP, though their dynamic inheritance is changed to wrapping.
-	
+=head1 CHANGES
+
+=head2 Sun Jul 20 19:35:40 EDT 2003
+
+=item Substituted "use vars qw($AUTOLOAD)" for "our $AUTOLOAD" to be backwards-compatible to Perl < 5.6
+
+=head2 Sun Apr  6 14:24:00 2003
+
+=item Created after AMF-PHP, though their dynamic inheritance is changed to wrapping.
+
 =cut
 
 use strict;
