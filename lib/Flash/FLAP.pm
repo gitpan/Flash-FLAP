@@ -24,7 +24,7 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 	
 );
 
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 
 =head1 NAME
@@ -154,8 +154,8 @@ sub service
     if($ENV{MOD_PERL})
     {
         require mod_perl;
-        use constant MP2 => ($mod_perl::VERSION >= 1.99);
-        if (MP2)
+        my $MP2 = ($mod_perl::VERSION >= 1.99);
+        if ($MP2)
         {
             die "Modperl2 is not supported yet. If you would like to use Flash::FLAP under modperl2 , please drop me a note at simonf\@simonf.com.\n";
             #eval

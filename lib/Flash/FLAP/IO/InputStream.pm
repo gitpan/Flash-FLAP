@@ -12,6 +12,10 @@ package Flash::FLAP::IO::InputStream;
 
     InputStream package built to handle getting the binary data from the raw input stream.
     
+==head1 CHANGES    
+Sun May 11 16:41:52 EDT 2003
+Rewrote readInt to get rid of the "uninitialized" warning when reading bytes of value 0.
+    
 =cut
 
 use strict;
@@ -49,10 +53,14 @@ sub readInt
     my ($self)=@_;
     # read the next 2 bytes, shift and add
     
-    my $thisByte = $self->{current_byte};
-    my $nextByte = $self->{current_byte}+1;
-    my $result = ((ord($self->{raw_data}->[$thisByte]) << 8) | 
-                        ord($self->{raw_data}->[$nextByte]));
+	my $thisByte = $self->{raw_data}->[$self->{current_byte}];
+	my $nextByte = $self->{raw_data}->[$self->{current_byte}+1];
+
+	my $thisNum = $thisByte ? ord($thisByte) : 0;
+	my $nextNum = $nextByte ? ord($nextByte) : 0;
+
+    my $result = (($thisNum) << 8) | $nextNum;
+
     $self->{current_byte} += 2;
     return $result;
 }

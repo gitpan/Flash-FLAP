@@ -150,7 +150,6 @@ sub readArray
     my @ret;
     # get the length of the array
     my $length = $self->{inputStream}->readLong();
-#print STDERR "Reading array of length $length\n";
     # loop over all of the elements in the data
     for (my $i=0; $i<$length; $i++)
     {

@@ -13,6 +13,9 @@ package Flash::FLAP::Sql::MysqlRecordSet;
     Encode the information returned by a Mysql query into the AMF RecordSet format.
     
 ==head1 CHANGES
+Sun May 11 18:22:33 EDT 2003
+Since Serializer now supports generic AMFObjects, made sure we conform.
+We need to have the _explicitType attribute...
 
 Sun Apr  6 14:24:00 2003
 Created after AMF-PHP, but something is not working yet...
@@ -43,15 +46,17 @@ sub query
     my ($self, $queryText) = @_;
 
     my $result = new Flash::FLAP::Util::Object;
+    # create the serverInfo array
+    $result->{"serverInfo"} = {};
 
 	my $sth = $self->dbh->prepare($queryText);
     $sth->execute();
 
 # create an initialData array
     my (@initialData, @columnNames);
-    $result->{initialData} = \@initialData;
-    $result->{columnNames} = \@columnNames;
-    $result->{totalCount}=$sth->rows();
+    $result->{serverInfo}->{initialData} = \@initialData;
+    $result->{serverInfo}->{columnNames} = \@columnNames;
+    $result->{serverInfo}->{totalCount}=$sth->rows();
 
 	push @columnNames, @{$sth->{NAME}};
 
@@ -64,12 +69,14 @@ sub query
         push @initialData, \@array;
     }	
 
-    $result->{cursor}=1;
-    $result->{version}=1;
-    $result->{serviceName}='PageableResultSet';
-    $result->{serverinfo}=undef;
-    $result->{id}=undef;
-    #$result->{_explicitType}='RecordSet';
+    # create the id field --> i think this is used for pageable recordsets
+    $result->{"serverInfo"}->{"id"} = "FLAP"; 
+    $result->{"serverInfo"}->{"cursor"} = 1; # maybe the current record ????
+    $result->{"serverInfo"}->{"serviceName"} = "doStuff"; # in CF this is PageAbleResult not here   
+    # versioning
+    $result->{"serverInfo"}->{"version"} = 1;
+
+    $result->{_explicitType}='RecordSet';
 
     return $result;
 }

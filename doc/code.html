@@ -114,20 +114,28 @@ h4 {
     <tr>
       <td style="vertical-align: top;"><big><span
  style="font-weight: bold;">To use Flash::FLAP, download it  
-and install in the usual way (perl Makefile.PL; make; make install).<br>
+and install in the usual way (perl Makefile.PL; make; make install).<br><br>
+To build/export .swf files with "Flash Remoting" you need to install
+<a href=http://www.macromedia.com/software/flashremoting/downloads/components/>
+Flash Remoting MX Components </a> (free download).
+
+This will install the files "NetServices.as" and "NetDebug.as" that are
+used in the ActionScript.
       </span></big><br>
       <hr style="width: 100%; height: 2px;"><big><span
  style="font-weight: bold;"></span></big>
-      <h2>Sample code to use Flash Remoting <br>
+      <h2>Sample code that uses Flash Remoting <br>
       </h2>
-      <br>
+(See also examples that are distributed with the module).
+      <br><br>
 Client code:<br>
       <br>
       <pre>//Obligatory includes<br>#include "NetServices.as"<br>#include "NetDebug.as"<br><br>//Get a connection object<br>NetServices.setDefaultGatewayURL("http://host/cpu.pl");<br>connection = NetServices.createGatewayConnection();<br><br>//Get a pointer to a service<br>remoteService = connection.getService("Foo", this);<br><br>//Call a remote method on that service<br>remoteService.bar();<br><br>//or... send arguments to the server:<br>remoteService.bar(arg1, arg2);<br><br>//This callback function will be invoked<br>function bar_result(value)<br>{<br>	//do something with the value<br>}<br></pre>
 &nbsp; <br>
       <big> Server code, option A - service registration.</big><br>
 Use in simple applications.<br>
-      <pre>use Flash::FLAP;<br><br>package Foo;<br><br>sub new<br>{<br>    my ($proto)=@_;<br>    my $self={};<br>    bless $self, $proto;<br>Server code A:<br><br>      use Flash::FLAP;<br><br>package Foo;<br><br>sub new<br>{<br>    my ($proto)=@_;<br>    my $self={};<br>    bless $self, $proto;<br>    return $self;<br>}<br><br>sub bar<br>{<br>	my ($self, $arg1, $arg2) = @_;<br>	my $value;<br><br>	#Compute a return value<br>	#...<br><br>	return $value;<br>}<br><br>#Create the gateway object<br>my $gateway = Flash::FLAP-&gt;new; <br><br>#Register a service that provides methods.<br>#You can register more than one service.<br>#This can happen during server startup (if running under mod_perl).<br>$gateway-&gt;registerService("Foo",new Foo());<br><br>#Let the gateway figure out who will be called.<br>$gateway-&gt;service();<br> <br></pre>
+      <pre>
+use Flash::FLAP;<br><br>package Foo;<br><br>sub new<br>{<br>    my ($proto)=@_;<br>    my $self={};<br>    bless $self, $proto;<br>    return $self;<br>}<br><br>sub bar<br>{<br>	my ($self, $arg1, $arg2) = @_;<br>	my $value;<br><br>	#Compute a return value<br>	#...<br><br>	return $value;<br>}<br><br>#Create the gateway object<br>my $gateway = Flash::FLAP-&gt;new; <br><br>#Register a service that provides methods.<br>#You can register more than one service.<br>#This can happen during server startup (if running under mod_perl).<br>$gateway-&gt;registerService("Foo",new Foo());<br><br>#Let the gateway figure out who will be called.<br>$gateway-&gt;service();<br> <br></pre>
       <big> Server code, option B - limited service discovery.</big><br>
 Use in complex applications.<br>
       <br>

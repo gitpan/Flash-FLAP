@@ -12,6 +12,12 @@ package Flash::FLAP::IO::Serializer;
     Class used to convert physical perl objects into binary data.
 
 ==head1 CHANGES
+Sun May 11 16:43:05 EDT 2003
+Changed writeData to set type to "NULL" when the incoming data is undef. Previously
+it became a String, just like other scalars.
+
+Changed PHP's writeRecordset to a generic writeAMFObject. Verified Recordset support.
+
 
 Sun Mar  9 18:20:16 EST 2003
 Function writeObject should return the same as writeHash. This assumes that all meaningful data
@@ -196,31 +202,18 @@ sub writeObject
     $self->{out}->writeByte(9);
 }
 
-# write a RecordSet object
-sub writeRecordSet
+# write an AMF object
+# The difference with regular object is that the code is different 
+# and the class name is explicitly sent. Good for RecordSets.
+sub writeAMFObject
 {	
-    my ($self, $rs)=@_;
-    # create the RecordSet object
-    my $RecordSet = {};
-    # create the serverInfo array
-    $RecordSet->{"serverInfo"} = {};
-    # create the id field --> i think this is used for pageable recordsets
-    $RecordSet->{"serverInfo"}->{"id"} = "FLAP";
-    # get the total number of records
-    $RecordSet->{"serverInfo"}->{"totalCount"} = $rs->{numRows};
-    # save the initial data into the RecordSet object
-    $RecordSet->{"serverInfo"}->{"initialData"} = $rs->{initialData};
-    $RecordSet->{"serverInfo"}->{"cursor"} = 1; # maybe the current record ????
-    $RecordSet->{"serverInfo"}->{"serviceName"} = "doStuff"; # in CF this is PageAbleResult not here
-    $RecordSet->{"serverInfo"}->{"columnNames"} = $rs->{columnNames};
-    # versioning
-    $RecordSet->{"serverInfo"}->{"version"} = 1;
+    my ($self, $object)=@_;
     # write the custom package code
     $self->{out}->writeByte(16);
     # write the package name
-    $self->{out}->writeUTF("RecordSet");
-    # write the packagees data
-    $self->writeObject($RecordSet);                        
+    $self->{out}->writeUTF($object->{_explicitType});
+    # write the package's data
+    $self->writeObject($object);                        
 }
 
 
@@ -250,8 +243,14 @@ sub writeData
     #if it was not explicitly passed
     if ($type eq "unknown")
     {
+		if (!$d)
+		{
+			$type = "NULL";
+		}
+		else
+		{
         my $myRef = ref $d;
-        if (!$myRef or $myRef =~ "SCALAR")
+        if (!$myRef || $myRef =~ "SCALAR")
         {
             $type = "string";
         }
@@ -267,6 +266,7 @@ sub writeData
         {
             $type = "object";
         }
+		}
     }
     
     #BOOLEANS
@@ -330,14 +330,10 @@ sub writeData
         $self->writeDate($d);
     }
     # mysql recordset resource
-    elsif (lc($type) eq "mysql result") # resource type
+    elsif (lc($type) eq "amfobject") # resource type
     {
-        # load in the mysqlRecordSet package
-        include_once("sql/mysqlRecordSet.php");
-        # create a new recordset object
-        my $recordSet = new mysqlRecordSet($d); # returns formatted recordset
         # write the record set to the output stream
-        $self->writeRecordSet($recordSet); # writes recordset formatted for Flash
+        $self->writeAMFObject($d); # writes recordset formatted for Flash
     }		
     else
     {

@@ -30,4 +30,11 @@ doc/examples/basic/basic.swf
 doc/examples/basic/basic.html
 doc/examples/basic/basic.pl
 doc/examples/basic/basicservices/DataEcho.pm
-
+doc/examples/sql/DataGlue.as
+doc/examples/sql/README.txt
+doc/examples/sql/park.fla
+doc/examples/sql/park.html
+doc/examples/sql/park.swf
+doc/examples/sql/park.sql
+doc/examples/sql/park.pl
+doc/examples/sql/parkservices/ParkService.pm
