@@ -6,11 +6,10 @@ package Flash::FLAP::IO::OutputStream;
 
 =head1 NAME
     Flash::FLAP::IO::OutputStream
-    Translated from PHP Remoting v. 0.5b from the -PHP project.        
         
 ==head1 DESCRIPTION    
 
-    #Class used to convert the perl stuff into binary    
+    Class used to convert the perl stuff into binary    
     
 =cut
 

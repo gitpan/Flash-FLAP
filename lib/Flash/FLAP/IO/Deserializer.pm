@@ -6,7 +6,6 @@ package Flash::FLAP::IO::Deserializer;
 
 =head1 NAME
     Flash::FLAP::IO::Deserializer
-    Translated from PHP Remoting v. 0.5b from the -PHP project.        
         
 ==head1 DESCRIPTION    
 

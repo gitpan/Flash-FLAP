@@ -1,4 +1,4 @@
-package Flash::FLAP::Executive;
+package Flash::FLAP::App::Executive;
 # Copyright (c) 2003 by Vsevolod (Simon) Ilyushchenko. All rights reserved.
 # This program is free software; you can redistribute it and/or modify it
 # under the same terms as Perl itself.
@@ -6,16 +6,12 @@ package Flash::FLAP::Executive;
 
 =head1 NAME
     Flash::FLAP::App::Executive
-    Translated from PHP Remoting v. 0.5b from the -PHP project.        
         
 ==head1 DESCRIPTION    
 
-    Executive package calls the  file, loads the package and executes the desired method in the package
+    Executive package figures out whether to call an explicitly registered package or to look one up in a registered directory. Then it executes the desired method in the package
     
 ==head1 CHANGES
-
-Tue Mar 11 21:59:27 EST 2003
-Passing @$a instead of $a to user functions. $a always is an array.
 
 Sun Mar  23 13:27:00 EST 2003
 Synching with AMF-PHP:
@@ -26,6 +22,9 @@ Renamed setClassPath to setTarget and removed extra junk from that function.
 Eliminated _getPackage() and _getMethod().
 Removed safeExecution().
 	
+Tue Mar 11 21:59:27 EST 2003
+Passing @$a instead of $a to user functions. $a always is an array.
+
 =cut
 
 

@@ -24,13 +24,15 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK %EXPORT_TAGS);
 	
 );
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 
 =head1 NAME
 
 Flash::FLAP - Flash Remoting in Perl
 Translated from PHP Remoting v. 0.5b from the -PHP project.
+
+Main gateway class.  This is always the file you call from flash remoting-enabled server scripts.
 
 =head1 SYNOPSIS
 
@@ -64,8 +66,7 @@ See the documentation and examples for details.
 
 =head1 DESCRIPTION
 
-    Main gateway class.  This is always the file you call from flash remoting-enabled server scripts.
-    This file accepts the  data and deserializes it using the InputStream and Deserializer classes.
+	This file accepts the  data and deserializes it using the InputStream and Deserializer classes.
     Then the gateway builds the executive class which then loads the targeted class file
     and executes the targeted method via flash remoting.
     After the target uri executes the the gateway determines the data type of the data
@@ -104,6 +105,10 @@ ORIGINAL PHP Remoting CONTRIBUTORS
 
 ==head1 CHANGES
 
+Wed Apr 23 19:22:56 EDT 2003
+Added "binmode STDOUT" before printing headers to prevent conversion of 0a to 0d0a on Windows.
+Added modperl 1 support and (so far commented out) hypothetical modperl 2 support.
+
 Sun Mar  23 13:27:00 EST 2003
 Synching with AMF-PHP:
 Added functions debugDir() and log() (debug() in PHP), added reading headers to service().
@@ -127,7 +132,7 @@ sub new
     my ($proto) = @_;
     my $self = {};
     bless $self, $proto;
-    $self->{exec} = new Flash::FLAP::Executive();
+    $self->{exec} = new Flash::FLAP::App::Executive();
     $self->{debug}=0;
     return $self;
 }
@@ -144,7 +149,42 @@ sub service
     my ($self)=@_;
 
     my $inputStream;
-    my $content = do { local $/, <> }; #read the whole STDIN into one variable
+    my $content = "";
+
+    if($ENV{MOD_PERL})
+    {
+        use mod_perl;
+        use constant MP2 => ($mod_perl::VERSION >= 1.99);
+        if (MP2)
+        {
+            die "Modperl2 is not supported yet. If you would like to use Flash::FLAP under modperl2 , please drop me a note at simonf\@simonf.com.\n";
+            #eval
+            #{
+            #   require Apache::RequestUtil;
+            #   require Apache::RequestReq;
+            #};
+            #if ($@)
+            #{
+            #   die "Running under mod_perl 2 but could not load Apache::RequestUtil: $@\n";
+            #}
+            #my $r = Apache->request();
+            #Apache::RequestReq->read($r, $content, $r->header_in('Content-Length'));
+        }
+        else
+        {
+            eval {require Apache;};
+            if ($@)
+            {
+                die "Running under mod_perl 1 but could not load Apache::Request: $@\n";
+            }
+            my $r = Apache->request();
+            $r->read($content, $r->header_in('Content-Length'));
+        }
+    }
+    else
+    {
+        $content = do { local $/, <> }; #read the whole STDIN into one variable
+    }
 
     $self->_service($content);
 
@@ -249,6 +289,10 @@ sub _service
     # send the correct header
     my $response = $outstream->flush();
     my $resLength = length $response;
+
+	#Necessary on Windows to prevent conversion of 0a to 0d0a.
+	binmode STDOUT;
+
 print <<EOF;
 Content-Type: application/x-amf
 Content-Length: $resLength

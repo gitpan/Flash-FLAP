@@ -2,8 +2,7 @@ package Flash::FLAP::Util::RemotingService;
 
 
 =head1 NAME
-    Flash::FLAP::Util::RemotingService;
-    Translated from PHP Remoting v. 0.5b from the -PHP project.        
+    Flash::FLAP::Util::RemotingService
         
 ==head1 DESCRIPTION    
 

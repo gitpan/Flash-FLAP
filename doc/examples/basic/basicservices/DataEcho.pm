@@ -8,7 +8,6 @@ package DataEcho;
 
 =head1 NAME
     DataEcho
-    Translated from PHP Remoting v. 0.5b from the -PHP project.        
         
 ==head1 DESCRIPTION    
 
